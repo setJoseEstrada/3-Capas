@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Policy;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -60,18 +61,20 @@ namespace Presentacion.Alumnos
 
              AportacionesIMSS aportaciones = nAlumno.CalcularIMSS(id);
 
-            this.lblEnfermedadMaternal.Text = aportaciones.EnfermedadMaternal.ToString();
-            this.lblInvalidezVida.Text = aportaciones.InvalidezVida.ToString();
-            this.lblRetiro.Text = aportaciones.Retiro.ToString();
-            this.lblCesantiaP.Text = aportaciones.CesantiaP.ToString();
-            this.lblInfonavit.Text = aportaciones.Infonavit.ToString();
+            this.lblEnfermedades.Text = aportaciones.EnfermedadMaternal.ToString();
+            this.lblInvalidez.Text = aportaciones.InvalidezVida.ToString();
+            this.Label7.Text = aportaciones.Retiro.ToString();
+            this.lblCesantia.Text = aportaciones.CesantiaP.ToString();
+            this.Label11.Text = aportaciones.Infonavit.ToString();
 
-
+         
 
 
 
 
         }
+
+       
 
         protected void btnISR_Click(object sender, EventArgs e)
         {
@@ -79,14 +82,21 @@ namespace Presentacion.Alumnos
             int id = Convert.ToInt32(Request.QueryString["id"]);
             ItemTablaISR item = alumno.CalcularISR(id);
 
-         
 
-            this.lblLimiteInferior.Text = item.LimiteInferior.ToString();
-            this.lblLimiteSuperior.Text = item.LimiteSuperior.ToString();
-            this.lblCuota.Text= item.CuotaFija.ToString();
-            this.lblExce3dente.Text = item.Excedente.ToString();
-            this.lblimpuesto.Text = item.ISR.ToString();
-      
+            this.lblLimInf.Text = item.LimiteInferior.ToString();
+            this.lblLimSup.Text = item.LimiteSuperior.ToString();
+            this.lblCuotaFija.Text = item.CuotaFija.ToString();
+            this.lblExcedente.Text = item.Excedente.ToString();
+            this.lblSubsidio.Text = item.Subsidio.ToString();
+            this.Label13.Text = item.ISR.ToString();
+            //this.lblLimiteInferior.Text = item.LimiteInferior.ToString();
+            //this.lblLimiteSuperior.Text = item.LimiteSuperior.ToString();
+            //this.lblCuota.Text= item.CuotaFija.ToString();
+            //this.lblExce3dente.Text = item.Excedente.ToString();
+            //this.lblimpuesto.Text = item.ISR.ToString();
+
+            mpeModalISR.Show();
+
         }
     }
 }

@@ -48,7 +48,7 @@
             ControlToValidate="txtNombre"
             
             ErrorMessage="Solo Numeros" CssClass="text-danger" 
-            ValidationExpression="[A-Z a-z]">
+            ValidationExpression="[A-Z a-z]+">
 
         </asp:RegularExpressionValidator>
         <div>

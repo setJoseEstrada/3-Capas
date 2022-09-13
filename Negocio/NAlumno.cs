@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using Entidades;
 using System.Data;
 using Negocio;
+using System.ServiceModel.Configuration;
+using System.Runtime.Serialization.Json;
+using Newtonsoft.Json;
 
 namespace Negocio
 {
@@ -49,40 +52,47 @@ namespace Negocio
 
         public ItemTablaISR CalcularISR(int id)
         {
-            //List<ItemTablaISR> tabla = DAlumno.ConsultarTablaISR(id);
-            //ItemTablaISR nuevo = DAlumno.ConsultarTablaISR(id);
-            //DAlumno.Consultar(id);
-            //Alumno alumno = Consultar(id);
-            //decimal quincenal = alumno.Sueldo / 2;
 
 
-
-            List<ItemTablaISR> nuevo1 =  DAlumno.ConsultarTablaISR(id);
-            DAlumno.Consultar(id);
-            Alumno alumno = Consultar(id);
-            decimal quincenal = alumno.Sueldo / 2;
-            //Realizar el calculo en esta seccion de negocios
-            ItemTablaISR nuevo = new ItemTablaISR();
-
-            var alumnos = from Alumno in nuevo1
-                          where quincenal > Alumno.LimiteInferior
-                           && quincenal < Alumno.LimiteSuperior
-                          select Alumno; //Utilizo Linq para buscar los valores que necesito
-
-            foreach (var item in alumnos)
+            try
             {
-                
-                nuevo.LimiteInferior = item.LimiteInferior;
-                nuevo.LimiteSuperior = item.LimiteSuperior;
-                nuevo.CuotaFija = item.CuotaFija;
-                nuevo.Excedente = item.Excedente;
-                nuevo.Subsidio = item.Subsidio;
-                decimal Excedente = (quincenal - nuevo.LimiteInferior) * (nuevo.Excedente / 100);
-                nuevo.ISR = Excedente + nuevo.CuotaFija - nuevo.Subsidio;
-                break;
+                Negocio.WebService.wsAlumnosSoapClient service = new Negocio.WebService.wsAlumnosSoapClient();
+                WebService.ItemTablaISR item = service.CalcularISR(id);
+                string jason = JsonConvert.SerializeObject(item);
+                return JsonConvert.DeserializeObject<ItemTablaISR>(jason);  
+            }
+            catch (Exception)
+            {
+                List<ItemTablaISR> nuevo1 = DAlumno.ConsultarTablaISR(id); // mando a llamar mi metodo en una lista para RECORRER SUS VALORES
+                DAlumno.Consultar(id);
+                Alumno alumno = Consultar(id);
+                decimal quincenal = alumno.Sueldo / 2;
+                //Realizar el calculo en esta seccion de negocios
+                ItemTablaISR nuevo = new ItemTablaISR();
+
+                var alumnos = from Alumno in nuevo1
+                              where quincenal > Alumno.LimiteInferior
+                               && quincenal < Alumno.LimiteSuperior
+                              select Alumno; //Utilizo Linq para buscar los valores que necesito
+
+                foreach (var item in alumnos)
+                {
+
+                    nuevo.LimiteInferior = item.LimiteInferior;
+                    nuevo.LimiteSuperior = item.LimiteSuperior;
+                    nuevo.CuotaFija = item.CuotaFija;
+                    nuevo.Excedente = item.Excedente;
+                    nuevo.Subsidio = item.Subsidio;
+                    decimal Excedente = (quincenal - nuevo.LimiteInferior) * (nuevo.Excedente / 100);
+                    nuevo.ISR = Excedente + nuevo.CuotaFija - nuevo.Subsidio;
+                    break;
+                }
+
+                return nuevo;
+
             }
 
-            return nuevo;
+         
 
         }
 

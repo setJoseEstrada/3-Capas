@@ -14,18 +14,21 @@ namespace Presentacion.Alumnos
 {
     public partial class Create : System.Web.UI.Page
     {
-        Alumno alumno = new Alumno(); ///propiedades
+      
        
-
-        NAlumno negocio = new NAlumno(); /// metodos
-        NEstado estado = new NEstado();
-        NEstatusAlumno  NEstatusAlumno = new NEstatusAlumno();
+    
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
+
+
+               
             {
-             
+                Alumno alumno = new Alumno(); ///propiedades
+                NAlumno negocio = new NAlumno();
+                NEstatusAlumno NEstatusAlumno = new NEstatusAlumno();
+
 
                 NEstado metodo = new NEstado();
                 NEstatusAlumno estatus = new NEstatusAlumno();
@@ -50,21 +53,28 @@ namespace Presentacion.Alumnos
         protected void Unnamed1_Click1(object sender, EventArgs e)
         {
             if (Page.IsValid){
-                alumno.Nombre = txtNombre.Text;
-                alumno.PrimerApellido = txtPrimerApellido.Text;
-                alumno.SegundoApellido = txtSegundoApellido.Text;
-                alumno.FechaNacimiento = Convert.ToDateTime(txtfecha.Text);
-                alumno.Curp = txtCurp.Text;
-                alumno.Correo = txtCorreo.Text;
-                alumno.Telefono = txtTelefono.Text;
-                alumno.Sueldo = Convert.ToInt32(txtSueldo.Text);
-                alumno.IdEstadoOrigen = Convert.ToInt32(DropIdEstadoOrigen.SelectedValue);
-                alumno.IdEstatus = Convert.ToInt16(DropIdEstatus.SelectedValue);
 
+                Alumno alumno = new Alumno(); ///propiedades
+
+                NAlumno negocio = new NAlumno();
+                NEstatusAlumno NEstatusAlumno = new NEstatusAlumno();
+
+
+                alumno.Nombre = this.txtNombre.Text;
+                alumno.PrimerApellido = this.txtPrimerApellido.Text;
+                alumno.SegundoApellido = this.txtSegundoApellido.Text;
+                alumno.FechaNacimiento = Convert.ToDateTime(this.txtfecha.Text);
+                alumno.Curp = this.txtCurp.Text;
+                alumno.Correo = this.txtCorreo.Text;
+                alumno.Telefono = this.txtTelefono.Text;
+                alumno.Sueldo = Convert.ToDecimal(this.txtSueldo.Text);
+                alumno.IdEstadoOrigen = Convert.ToInt32(this.DropIdEstadoOrigen.SelectedValue);
+                alumno.IdEstatus = Convert.ToInt16(this.DropIdEstatus.SelectedValue);
+                negocio.Agregar(alumno);
                 Response.Redirect("Index.aspx");
 
 
-                negocio.Agregar(alumno);
+              
             }
     
 
